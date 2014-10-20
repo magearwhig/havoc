@@ -1,0 +1,57 @@
+<% include header %>
+        <div ng-controller="OwnerListCtrl">
+            <div class="jumbotron">
+              <h1>Trade Board</h1>
+              <p>Add a player you are looking to deal.</p>
+              <form class="form-horizontal">
+                <div class="alert alert-danger" ng-hide="tradeBoardErrors.length == 0">
+                    <ul>
+                        <li ng-repeat="error in tradeBoardErrors">
+                            {{error}}
+                        </li>
+                    </ul>
+                </div>
+                <fieldset>
+                    <div class="form-group">
+                        <label for="team" class="col-lg-2 control-label">Team</label>
+                        <div class="col-lg-10">
+                            <select placeholder="Select your Team" id="team" class="form-control" ng-model="team" ng-options="team.id as team.owner for team in teams"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="availablePlayer" class="col-lg-2 control-label">Player Available</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" id="availablePlayer" ng-model="availablePlayer" placeholder="Player Available">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Positions Sought</label>
+                        <div class="col-lg-10">
+                            <label class="checkbox-inline" ng-repeat="position in positions">
+                              <input type="checkbox" value="{{position}}" ng-click="positionSelection(position)"> {{position}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-lg-10 col-lg-offset-2">
+                        <button type="submit" class="btn btn-primary" ng-click="addPlayer()">Add</button>
+                      </div>
+                    </div>
+                </fieldset>
+              </form>
+            </div>
+            <!-- available players -->
+            <div class="panel panel-primary" ng-repeat="player in availablePlayers">
+              <div class="panel-heading">
+                <h3 class="panel-title">{{player.player_available}}</h3>
+              </div>
+              <div class="panel-body">
+                <ul class="list-unstyled">
+                  <li>Team: {{player.team}}</li>
+                  <li>Positions Sought: {{player.positions_sought.join(", ")}}</li>
+                  <li>Added: {{player.timestamp}}</li>
+                </ul>
+              </div>
+            </div>
+        </div>
+<% include footer %>
