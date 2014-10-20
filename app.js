@@ -11,10 +11,10 @@ var trades = require('./routes/trades');
 var jsonroute = require('./routes/json');
 
 var connection = mysql.createPool({
-    host     : require('fs').readFileSync("../../HAVOC_DB_HOST"),
-    user     : require('fs').readFileSync("../../HAVOC_DB_USER"),
-    database : require('fs').readFileSync("../../HAVOC_DB"),
-    password : require('fs').readFileSync("../../HAVOC_DB_PASSWORD")
+    host     : require('fs').readFileSync("../HAVOC_DB_HOST"),
+    user     : require('fs').readFileSync("../HAVOC_DB_USER"),
+    database : require('fs').readFileSync("../HAVOC_DB"),
+    password : require('fs').readFileSync("../HAVOC_DB_PASSWORD")
 });
 
 var getConnection = function(callback) {
