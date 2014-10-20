@@ -156,11 +156,9 @@ c.on('ready', function() {
             .then(function(){
                 return runCommand('cd /home/ec2-user && echo "' + process.env.HAVOC_DB_HOST + '" > HAVOC_DB_HOST && echo "' + process.env.HAVOC_DB_USER + '" > HAVOC_DB_USER && echo "' + process.env.HAVOC_DB + '" > HAVOC_DB && echo "' + process.env.HAVOC_DB_PASSWORD + '" > HAVOC_DB_PASSWORD', "set files")
             })
-/*
             .then(function(){
                 return runCommand("cd /home/ec2-user/havoc && npm install && ./node_modules/forever/bin/forever start bin/www", "launch prod");
             })
-*/
             .then(function(){
                 c.end();
             });
