@@ -4,7 +4,7 @@ var _ = require('lodash');
 
 router.get('/teams', function(req, res) {
     req.app.locals.connection(function(err, conn) {
-        conn.query("select * from teams", function(err, rows){
+        conn.query("select * from teams where current = 1", function(err, rows){
             conn.release(); 
             res.json(rows);
         });
@@ -13,7 +13,7 @@ router.get('/teams', function(req, res) {
 
 router.get('/players/available', function(req, res) {
     req.app.locals.connection(function(err, conn) {
-        conn.query("select pa.player_available, t.owner as team, pa.positions_sought, pa.timestamp from players_available pa LEFT JOIN teams t on pa.team = t.id WHERE pa.timestamp >= DATE_ADD(CURDATE(), INTERVAL -10 DAY) order by timestamp DESC", function(err, rows){
+        conn.query("select pa.player_available, t.owner as team, pa.positions_sought, pa.timestamp from players_available pa LEFT JOIN teams t on pa.team = t.id WHERE pa.timestamp >= DATE_ADD(CURDATE(), INTERVAL -10 DAY) and t.current = 1 order by timestamp DESC", function(err, rows){
             rows.map(function(item){
                 item.positions_sought = JSON.parse(item.positions_sought);
                 return item;
