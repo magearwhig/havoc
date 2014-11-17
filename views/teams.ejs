@@ -1,0 +1,23 @@
+<% include header %>
+<h1> Teams</h1>
+<h1>Current</h1>
+<ul>
+<%
+    teams.forEach(function(a){
+%>
+    <li><a href="/teams/<%= a.id %>"><%= a.owner %></a></li>
+<%
+    });
+%>
+</ul>
+<h1>Historic</h1>
+<ul>
+<%
+    historicTeams.forEach(function(a){
+%>
+    <li><a href="/teams/<%= a.id %>"><%= a.owner %></a></li>
+<%
+    });
+%>
+</ul>
+<% include footer %>

@@ -1,0 +1,36 @@
+<% include header %>
+<h1><%= teamName %></h1>
+<h2>Game Log</h2>
+<table class="table table-striped">
+    <tr>
+        <th>Week</th>
+        <th>Year</th>
+        <th>Away Team</th>
+        <th>Away Score</th>
+        <th>Home Team</th>
+        <th>Home Score</th>
+    </tr>
+<%
+    games.forEach(function(a){
+        var playoffs = {
+            14: "Round 1",
+            15: "Round 2",
+            16: "Championship"
+        };
+        if (typeof playoffs[a.week] !== "undefined") {
+            a.week = playoffs[a.week];
+        }
+%>
+    <tr>
+        <td><%= a.week %></td>
+        <td><%= a.year %></td>
+        <td><%= a.away_team_name %></td>
+        <td><%= a.away_score %></td>
+        <td><%= a.home_team_name %></td>
+        <td><%= a.home_score %></td>
+    </tr>
+<%
+    });
+%>
+</table>
+<% include footer %>

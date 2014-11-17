@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var trades = require('./routes/trades');
+var teams = require('./routes/teams');
 var jsonroute = require('./routes/json');
 
 var dbinfo = {
@@ -52,6 +53,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/trades', trades);
+app.use('/teams', teams);
 app.use('/json', jsonroute);
 
 // catch 404 and forward to error handler
