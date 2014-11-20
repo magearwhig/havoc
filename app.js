@@ -10,6 +10,7 @@ var routes = require('./routes/index');
 var trades = require('./routes/trades');
 var teams = require('./routes/teams');
 var records = require('./routes/records');
+var admin = require('./routes/admin');
 var jsonroute = require('./routes/json');
 
 var dbinfo = {
@@ -56,6 +57,7 @@ app.use('/', routes);
 app.use('/trades', trades);
 app.use('/teams', teams);
 app.use('/records', records);
+app.use('/admin', admin);
 app.use('/json', jsonroute);
 
 // catch 404 and forward to error handler
