@@ -1,17 +1,18 @@
 var express = require('express');
 var router = express.Router();
+var helpers = require('../modules/helpers');
+var Q = require('q');
 
 router.get('/', function(req, res) {
-    req.app.locals.connection(function(err, conn) {
-        conn.query("select * from teams where current = 1", function(err, rows){
-            conn.query("select * from teams where current = 0", function(err, historic){
-                conn.release(); 
-                res.render('teams', {
-                    title: 'Teams',
-                    historicTeams: historic,
-                    teams: rows
-                });
-            });
+    var connection = req.app.locals.connection;
+    Q.all([
+        helpers.queryWithPromises(connection, "select * from teams_w_stats where current = 1 order by id"),
+        helpers.queryWithPromises(connection, "select * from teams_w_stats where current = 0")
+    ]).spread(function(rows, historic){
+        res.render('teams', {
+            title: 'Teams',
+            historicTeams: historic,
+            teams: rows
         });
     });
 });

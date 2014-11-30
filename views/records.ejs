@@ -26,4 +26,30 @@
         </ul>
     </div>
 </div>
+<div class="row">
+    <div class="col-lg-6">
+        <h2>Best Win Percentage All Time</h2>
+        <ul>
+        <%
+            bestwinpct.forEach(function(a){
+        %>
+            <li><%= a.winpct %> | <%= a.owner %> (<%=a.wins %> - <%= a.losses %>)</li>
+        <%
+            });
+        %>
+        </ul>
+    </div>
+    <div class="col-lg-6">
+        <h2>Worst Win Percentage All Time</h2>
+        <ul>
+        <%
+            worstwinpct.forEach(function(a){
+        %>
+            <li><%= a.winpct %> | <%= a.owner %> (<%=a.wins %> - <%= a.losses %>)</li>
+        <%
+            });
+        %>
+        </ul>
+    </div>
+</div>
 <% include footer %>
