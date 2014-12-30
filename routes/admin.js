@@ -31,6 +31,7 @@ router.get('/', function(req, res) {
 
 router.post('/newgame', function(req, res) {
     var body = {
+        consolation: req.body.consolation === "yes" ? 1 : 0,
         away_team: req.body.away_team,
         away_score: req.body.away_score,
         home_team: req.body.home_team,
