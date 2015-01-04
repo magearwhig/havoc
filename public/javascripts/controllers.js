@@ -1,10 +1,52 @@
-havocApp.controller('OwnerListCtrl', function($scope, $http) {
+havocApp.controller('PointsCtrl', function($scope, pointsService) {
 
-    $http.get('/json/teams').success(function(data) {
+    var orders = {
+        teamName: "DESC",
+        year: "DESC",
+        week: "DESC",
+        points: "DESC"
+    };
+
+    $scope.currentPage = 1
+    $scope.totalItems = 0;
+    $scope.maxSize = 5;
+    $scope.limit = 10;
+    $scope.offset = 0;
+    $scope.sort = "points";
+    $scope.order = "DESC";
+
+    function updatePoints(offset, limit, sort, order) {
+        pointsService.getPoints(offset, limit, sort, order).then(function(data) {
+            $scope.points = data;
+            $scope.totalItems = data.totalRows;
+        });
+    }
+
+    $scope.sortData = function(sort) {
+        $scope.sort = sort;
+        if (orders[sort]) {
+            orders[sort] = orders[sort] === "ASC" ? "DESC" : "ASC";
+        }
+        $scope.order = orders[sort] || "DESC";
+        updatePoints($scope.offset, $scope.limit, $scope.sort, $scope.order);
+    };
+
+    $scope.pageChanged = function() {
+        $scope.offset = $scope.limit * ($scope.currentPage - 1);
+        updatePoints($scope.offset, $scope.limit, $scope.sort, $scope.order);
+    };
+
+    updatePoints($scope.offset, $scope.limit, $scope.sort, $scope.order);
+
+});
+
+havocApp.controller('OwnerListCtrl', function($scope, teamsService, playersService) {
+
+    teamsService.getTeams().then(function(data) {
         $scope.teams = data;
     });
     function updateAvailablePlayers() {
-        $http.get('/json/players/available').success(function(data) {
+        playersService.getPlayers().then(function(data) {
             $scope.availablePlayers = data;
         });
     }
@@ -33,7 +75,6 @@ havocApp.controller('OwnerListCtrl', function($scope, $http) {
     resetTradeBoard();
 
     $scope.addPlayer = function(){
-        console.log($scope.positionsSought, $scope.availablePlayer, $scope.team);
         if ($scope.positionsSought.length === 0) {
             $scope.tradeBoardErrors.push("Please list the positions of players you are seeking.");
         }
@@ -46,13 +87,8 @@ havocApp.controller('OwnerListCtrl', function($scope, $http) {
         if ($scope.tradeBoardErrors.length) {
             return;
         }
-        $http.post("/json/players/available", {
-            player: $scope.availablePlayer,
-            team: $scope.team,
-            positions_sought: $scope.positionsSought
-        }).success(function(data, status, headers, config){
+        playersService.postPlayers($scope.availablePlayer, $scope.team, $scope.positionsSought).then(function(data, status, headers, config){
             resetTradeBoard();
-        }).error(function(data, status, headers, config){
         });
     };
 
@@ -65,6 +101,5 @@ havocApp.controller('OwnerListCtrl', function($scope, $http) {
         } else {
             $scope.positionsSought.push(position);
         }
-        console.log($scope.positionsSought)
     };
 });
